@@ -2,8 +2,8 @@ setwd("~/Google Drive/DataAnalytics/Transaction Data (updated)/SBI")
 library("plyr", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")
 library("ggplot2", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")
 library("qdapTools", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")
-input_filename <- "JanD2C_2015.csv"
-output_filename <- "JanD2C_2015_SBI_Repeat_Customer_Pattern_by_Sender.csv"
+input_filename <- "DecD2C_2014.csv"
+output_filename <- "DecD2C_2014_SBI_Repeat_Customer_Pattern_by_Sender.csv"
 txdata = read.csv(input_filename, header = TRUE)
 #"JanD2C_2015.csv"
 #"FebD2C_2015.csv"
@@ -12,16 +12,8 @@ txdata$CSP_Code <- as.factor(txdata$CSP_Code)
 txdata$SBI_Account <- as.factor(txdata$SBI_Account)
 str(txdata)
 summary(txdata)
-#get repeat CSP 
-rpCSP <- txdata[which(duplicated(txdata$CSP_Code)),]
-rpCSP <- txdata[which(txdata$CSP_Code %in% rpCSP$CSP_Code),]
-#get repeat Customer from repeat CSP
-rpCustomer <- rpCSP[which(duplicated(rpCSP$Depositor_Mobile)),]
-rpCustomer <- rpCSP[which(rpCSP$Depositor_Mobile %in% rpCustomer$Depositor_Mobile),]
-#sort repeat Cusomer who goes to the same CSP by Mobile Number (Customer ID)
-rpCustomer <- rpCustomer[order(rpCustomer$Depositor_Mobile),]
-rpCustomer$numOfSwitch <- rep(0, nrow(rpCustomer))
-# ===== get fickle customer =====
+
+# ===== get repeat customer =====
 #   ===== get repeat customer (customer who has multiple transaction data)  ====
 fkCustomer <- txdata[which(duplicated(txdata$Depositor_Mobile)),]
 fkCustomer <- txdata[which(txdata$Depositor_Mobile %in% fkCustomer$Depositor_Mobile),]
@@ -30,15 +22,12 @@ fkCustomer <- fkCustomer[order(fkCustomer$Depositor_Mobile),]
 agentsFkCustomer <- data.frame(fkCustomer$CSP_Code, fkCustomer$Depositor_Mobile)
 agentsFkCustomer <- unique(agentsFkCustomer)
 numOfAgentPerCustomer <- count(agentsFkCustomer, vars="fkCustomer.Depositor_Mobile")
-realFickleCustomerID <- numOfAgentPerCustomer[which(numOfAgentPerCustomer$freq>1),]
-realFickleCustomer <- fkCustomer[which(fkCustomer$Depositor_Mobile %in% realFickleCustomerID$fkCustomer.Depositor_Mobile),]
-realFickleCustomer$numOfSwitch <- lookup(realFickleCustomer$Depositor_Mobile, realFickleCustomerID)
-
+#realFickleCustomerID <- numOfAgentPerCustomer[which(numOfAgentPerCustomer$freq>1),]
+#realFickleCustomer <- fkCustomer[which(fkCustomer$Depositor_Mobile %in% realFickleCustomerID$fkCustomer.Depositor_Mobile),]
+fkCustomer$numOfSwitch <- lookup(fkCustomer$Depositor_Mobile, numOfAgentPerCustomer)
+table(fkCustomer$numOfSwitch)
 #combine rpCustomer and realFickleCustomer
-str(rpCustomer)
-str(realFickleCustomer)
-traindata <- rbind(rpCustomer, realFickleCustomer)
-write.csv(traindata, output_filename, row.names=FALSE)
+write.csv(fkCustomer, output_filename, row.names=FALSE)
 verifywriteOutput = read.csv(output_filename, header = TRUE)
 
 # ===== for each CSP_Code, count the number of different Depositor_Mobile ======

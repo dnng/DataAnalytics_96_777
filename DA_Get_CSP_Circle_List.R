@@ -2,8 +2,8 @@ setwd("~/Google Drive/DataAnalytics/Transaction Data (updated)/SBI")
 library("plyr", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")
 library("ggplot2", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")
 library("qdapTools", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")
-input_filename <- "DecD2C_2014.csv"
-output_filename <- "DecD2C_2014_CSP_Circle_List.csv"
+input_filename <- "JanD2C_2015.csv"
+output_filename <- "JanD2C_2015_CSP_Circle_List.csv"
 txdata = read.csv(input_filename, header = TRUE)
 #"JanD2C_2015.csv"
 #"FebD2C_2015.csv"
@@ -14,11 +14,11 @@ CSP_NameList <- data.frame(unique(txdata$CSP_Name))
 SCSP_NameList <- data.frame(unique(txdata$SCSP_Name))
 SCSP_CodeList <- data.frame(unique(txdata$SCSP_Code))
 
-write.csv(CSP_Code, "DecD2C_2014_CSP_Code_List.csv", row.names=FALSE)
-write.csv(CSP_CircleList, "DecD2C_2014_CSP_Circle_List.csv", row.names=FALSE)
-write.csv(CSP_NameList, "DecD2C_2014_CSP_NameList.csv", row.names=FALSE)
-write.csv(SCSP_NameList, "DecD2C_2014_SCSP_NameList.csv", row.names=FALSE)
-write.csv(SCSP_CodeList, "DecD2C_2014_SCSP_CodeList.csv", row.names=FALSE)
+write.csv(CSP_Code, "JanD2C_2015_CSP_Code_List.csv", row.names=FALSE)
+write.csv(CSP_CircleList, "JanD2C_2015_CSP_Circle_List.csv", row.names=FALSE)
+write.csv(CSP_NameList, "JanD2C_2015_CSP_NameList.csv", row.names=FALSE)
+write.csv(SCSP_NameList, "JanD2C_2015_SCSP_NameList.csv", row.names=FALSE)
+write.csv(SCSP_CodeList, "JanD2C_2015_SCSP_CodeList.csv", row.names=FALSE)
 
 # ===== for each CSP_Code, count the number of different Depositor_Mobile ======
 #rpCustomer.csp_code.depositor_mb <- data.frame(rpCustomer$CSP_Code, rpCustomer$Depositor_Mobile)

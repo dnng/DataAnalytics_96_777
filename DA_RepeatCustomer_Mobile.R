@@ -2,8 +2,8 @@ setwd("~/Google Drive/DataAnalytics/Transaction Data (updated)/SBI")
 library("plyr", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")
 library("ggplot2", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")
 library("qdapTools", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")
-input_filename <- "DecD2C_2014.csv"
-output_filename <- "DecD2C_2014_SBI_Repeat_Customer_Pattern_by_Sender.csv"
+input_filename <- "JanD2C_2015.csv"
+output_filename <- "JanD2C_2015_SBI_Repeat_Customer_Pattern_by_Sender.csv"
 txdata = read.csv(input_filename, header = TRUE)
 #"JanD2C_2015.csv"
 #"FebD2C_2015.csv"

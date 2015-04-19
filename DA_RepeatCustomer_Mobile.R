@@ -2,10 +2,11 @@ setwd("~/Google Drive/DataAnalytics/Transaction Data (updated)/SBI")
 library("plyr", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")
 library("ggplot2", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")
 library("qdapTools", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")
-
-txdata = read.csv("Dec2014_SBI.csv", header = TRUE)
-#txdata_1 = read.csv("JanD2C_2015.csv", header = TRUE)
-#txdata_2 = read.csv("FebD2C_2015.csv", header = TRUE)
+input_filename <- "JanD2C_2015.csv"
+output_filename <- "JanD2C_2015_SBI_Repeat_Customer_Pattern_by_Sender.csv"
+txdata = read.csv(input_filename, header = TRUE)
+#"JanD2C_2015.csv"
+#"FebD2C_2015.csv"
 str(txdata)
 txdata$CSP_Code <- as.factor(txdata$CSP_Code)
 txdata$SBI_Account <- as.factor(txdata$SBI_Account)
@@ -37,8 +38,8 @@ realFickleCustomer$numOfSwitch <- lookup(realFickleCustomer$Depositor_Mobile, re
 str(rpCustomer)
 str(realFickleCustomer)
 traindata <- rbind(rpCustomer, realFickleCustomer)
-write.csv(traindata, "Dec2014_SBI_Repeat_Customer_Pattern_by_Sender.csv", row.names=FALSE)
-verifywriteOutput = read.csv("Dec2014_SBI_Repeat_Customer_Pattern_by_Sender.csv", header = TRUE)
+write.csv(traindata, output_filename, row.names=FALSE)
+verifywriteOutput = read.csv(output_filename, header = TRUE)
 
 # ===== for each CSP_Code, count the number of different Depositor_Mobile ======
 #rpCustomer.csp_code.depositor_mb <- data.frame(rpCustomer$CSP_Code, rpCustomer$Depositor_Mobile)

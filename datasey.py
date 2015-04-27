@@ -1,3 +1,6 @@
+from matplotlib import pylab as plt
+import numpy as np
+from itertools import cycle, islice
 import pandas as pd
 import sys
 
@@ -58,8 +61,26 @@ for i in amount_and_account.iteritems():
 for j in range(len(top20_amoacc)):
     top20_mobacc.append([mobile_and_account[top20_amoacc[j][1]], top20_amoacc[j][0]])
 
-print top20_amoacc
-print top20_mobacc
+# print top20_amoacc
+# print top20_mobacc
+
+accs = []
+tots = []
 
 for i in range(len(top20_mobacc)):
-        print top20_mobacc[i][1], len(top20_mobacc[i][0])
+    accs.append(str(top20_mobacc[i][1]))
+    tots.append(len(top20_mobacc[i][0]))
+    print top20_mobacc[i][1], len(top20_mobacc[i][0])
+
+
+my_colors = [(x/128.0, x/148.0, 0.25) for x in range(len(accs))]
+
+x_pos = np.arange(len(accs))
+
+plt.bar(x_pos, tots, color=my_colors)
+plt.xlim([0, x_pos.size])
+plt.suptitle('Top 20 Accounts with most associated mobile Numbers per Total Transfered Amount', fontsize=14)
+plt.xticks(x_pos, tots, rotation=45)
+plt.ylabel('Total Amount', fontsize=12)
+plt.xlabel('Account', fontsize=12) 
+plt.show()
